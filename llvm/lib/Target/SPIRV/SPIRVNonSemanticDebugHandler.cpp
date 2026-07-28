@@ -782,13 +782,8 @@ void SPIRVNonSemanticDebugHandler::emitNonSemanticDebugStrings(
   for (const DIBasicType *BT : BasicTypes)
     emitOpStringIfNew(BT->getName(), MAI);
 
-  for (const DISubprogram *SP : SubprogramDeclarations) {
-    emitOpStringIfNew(SP->getName(), MAI);
-    emitOpStringIfNew(SP->getLinkageName(), MAI);
-    ScopeToPathOpStringReg[SP] = emitOpStringIfNew(getDebugFullPath(SP), MAI);
-  }
-
-  for (const DISubprogram *SP : SubprogramDefinitions) {
+  for (const DISubprogram *SP : concat<const DISubprogram *>(
+           SubprogramDeclarations, SubprogramDefinitions)) {
     emitOpStringIfNew(SP->getName(), MAI);
     emitOpStringIfNew(SP->getLinkageName(), MAI);
     ScopeToPathOpStringReg[SP] = emitOpStringIfNew(getDebugFullPath(SP), MAI);
