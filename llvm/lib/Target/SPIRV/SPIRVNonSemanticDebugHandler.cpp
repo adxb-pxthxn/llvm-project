@@ -519,7 +519,7 @@ SPIRVNonSemanticDebugHandler::emitDebugTypeFunctionForSubroutineType(
 
 // Match SPIRV-LLVM-Translator's selection logic for the Parent operand.
 std::optional<MCRegister>
-SPIRVNonSemanticDebugHandler::resolveDebugFunctionDeclarationParent(
+SPIRVNonSemanticDebugHandler::resolveDebugFunctionParent(
     const DISubprogram *SP) const {
   const DIScope *Scope = SP->getScope();
   if (Scope && !isa<DIFile>(Scope)) {
@@ -555,7 +555,7 @@ SPIRVNonSemanticDebugHandler::emitDebugFunctionDeclaration(
     return std::nullopt;
   MCRegister FnTyReg = *FnTyRegOpt;
 
-  auto ParentRegOpt = resolveDebugFunctionDeclarationParent(SP);
+  auto ParentRegOpt = resolveDebugFunctionParent(SP);
   if (!ParentRegOpt)
     return std::nullopt;
 
@@ -596,7 +596,7 @@ std::optional<MCRegister> SPIRVNonSemanticDebugHandler::emitDebugFunction(
   if (!FnTyRegOpt)
     return std::nullopt;
 
-  auto ParentRegOpt = resolveDebugFunctionDeclarationParent(SP);
+  auto ParentRegOpt = resolveDebugFunctionParent(SP);
   if (!ParentRegOpt)
     return std::nullopt;
 
